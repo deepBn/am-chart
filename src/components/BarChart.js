@@ -2,26 +2,17 @@ import { useLayoutEffect } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
+import am5themes_Dark from "@amcharts/amcharts5/themes/Dark";
+
 function BarChart() {
   useLayoutEffect(() => {
-    /**
-     * ---------------------------------------
-     * This demo was created using amCharts 5.
-     *
-     * For more information visit:
-     * https://www.amcharts.com/
-     *
-     * Documentation is available at:
-     * https://www.amcharts.com/docs/v5/
-     * ---------------------------------------
-     */
-
     // Create root element
     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
     var root = am5.Root.new("chartdiv");
 
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
+    // root.setThemes([am5themes_Animated.new(root)]);
     root.setThemes([am5themes_Animated.new(root)]);
 
     function generateChartData() {
@@ -196,10 +187,10 @@ function BarChart() {
     };
   }, []);
   return (
-    <div>
+    <>
       <div id="chartcontrols"></div>
       <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
-    </div>
+    </>
   );
 }
 
