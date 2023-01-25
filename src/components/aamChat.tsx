@@ -51,10 +51,9 @@ const AamChat = () => {
         // -------------------------------------------------------------------------------
         // https://www.amcharts.com/docs/v5/charts/stock-chart/#Adding_panels
         let mainPanel = stockChart.panels.push(am5stock.StockPanel.new(root, {
-            panX: false,
-            panY: false,
-            // wheelX: "panY",
-            wheelY: "zoomX"
+            wheelY: "zoomX",
+            panX: true,
+            panY: true
         }));
 
 
@@ -63,7 +62,7 @@ const AamChat = () => {
         // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
         let valueAxis = mainPanel.yAxes.push(am5xy.ValueAxis.new(root, {
             renderer: am5xy.AxisRendererY.new(root, {
-                // pan: "zoom"
+                pan: "zoom"
             }),
             extraMin: 0.2, // adds some space for for main series
             tooltip: am5.Tooltip.new(root, {}),
@@ -132,7 +131,7 @@ const AamChat = () => {
 
         let volumeValueAxis = mainPanel.yAxes.push(am5xy.ValueAxis.new(root, {
             numberFormat: "#.#a",
-            height: am5.percent(20),
+            height: am5.percent(30),
             y: am5.percent(100),
             centerY: am5.percent(100),
             renderer: volumeAxisRenderer
@@ -175,8 +174,11 @@ const AamChat = () => {
         // Add cursor(s)
         // -------------------------------------------------------------------------------
         // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-        var cursor = mainPanel.set("cursor", am5xy.XYCursor.new(root, {
-            // behavior: 'zoomY',   
+        mainPanel.set("cursor", am5xy.XYCursor.new(root, {
+            yAxis: valueAxis,
+            // xAxis: dateAxis,
+            snapToSeries: [valueSeries],
+            snapToSeriesBy: "y!"
         }));
 
         // Add scrollbar
@@ -285,10 +287,8 @@ const AamChat = () => {
 
         // set data to all series
         valueSeries.data.setAll(data.reverse());
-        volumeSeries.data.setAll(data.reverse());
-        // sbSeries.data.setAll(data);
-
-
+        volumeSeries.data.setAll(data);
+        // sbSeries.data.setAll(data.reverse());
         return () => {
             root.dispose();
         };
