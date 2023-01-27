@@ -2,11 +2,15 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5stock from '@amcharts/amcharts5/stock';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Dark';
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import React from 'react';
 import { data } from './data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import MonacoEditor from 'react-monaco-editor'
+import Editor from '@monaco-editor/react';
 
 const AamChat = () => {
+    const [menu, setMenu] = useState('editor');
     useLayoutEffect(() => {
         /**
   * ---------------------------------------
@@ -218,29 +222,29 @@ const AamChat = () => {
         let bollingerBands = stockChart.indicators.push(am5stock.BollingerBands.new(root, {
             stockChart: stockChart,
             stockSeries: valueSeries,
-            legend: valueLegend
+            // legend: valueLegend
         }));
 
 
         // Interval switcher
         // -------------------------------------------------------------------------------
         // https://www.amcharts.com/docs/v5/charts/stock/toolbar/interval-control/
-        var intervalSwitcher = am5stock.IntervalControl.new(root, {
-            stockChart: stockChart,
-            items: [
-                { id: "1 minute", label: "1 minute", interval: { timeUnit: "minute", count: 1 } },
-                { id: "2 minute", label: "2 minutes", interval: { timeUnit: "minute", count: 2 } },
-                { id: "5 minute", label: "5 minutes", interval: { timeUnit: "minute", count: 5 } },
-                { id: "15 minute", label: "15 minutes", interval: { timeUnit: "minute", count: 15 } },
-                { id: "30 minute", label: "30 minutes", interval: { timeUnit: "minute", count: 30 } },
-                { id: "1 hour", label: "1 hour", interval: { timeUnit: "hour", count: 1 } },
-                { id: "4 hour", label: "4 hours", interval: { timeUnit: "hour", count: 4 } },
-                { id: "1 day", label: "1 day", interval: { timeUnit: "day", count: 1 } },
-                { id: "1 week", label: "1 week", interval: { timeUnit: "week", count: 1 } },
-                { id: "1 month", label: "1 month", interval: { timeUnit: "month", count: 1 } },
-                { id: "1 year", label: "1 year", interval: { timeUnit: "year", count: 1 } }
-            ]
-        });
+        // var intervalSwitcher = am5stock.IntervalControl.new(root, {
+        //     stockChart: stockChart,
+        //     items: [
+        //         { id: "1 minute", label: "1 minute", interval: { timeUnit: "minute", count: 1 } },
+        //         { id: "2 minute", label: "2 minutes", interval: { timeUnit: "minute", count: 2 } },
+        //         { id: "5 minute", label: "5 minutes", interval: { timeUnit: "minute", count: 5 } },
+        //         { id: "15 minute", label: "15 minutes", interval: { timeUnit: "minute", count: 15 } },
+        //         { id: "30 minute", label: "30 minutes", interval: { timeUnit: "minute", count: 30 } },
+        //         { id: "1 hour", label: "1 hour", interval: { timeUnit: "hour", count: 1 } },
+        //         { id: "4 hour", label: "4 hours", interval: { timeUnit: "hour", count: 4 } },
+        //         { id: "1 day", label: "1 day", interval: { timeUnit: "day", count: 1 } },
+        //         { id: "1 week", label: "1 week", interval: { timeUnit: "week", count: 1 } },
+        //         { id: "1 month", label: "1 month", interval: { timeUnit: "month", count: 1 } },
+        //         { id: "1 year", label: "1 year", interval: { timeUnit: "year", count: 1 } }
+        //     ]
+        // });
         // const setDataInterval = (interval) => {
 
         // }
@@ -278,7 +282,7 @@ const AamChat = () => {
                 am5stock.SettingsControl.new(root, {
                     stockChart: stockChart
                 }),
-                intervalSwitcher
+                // intervalSwitcher
 
             ]
         })
@@ -295,10 +299,63 @@ const AamChat = () => {
     }, []);
 
     return (
-        <div style={{ backgroundColor: "black" }}>
-            <div id="chartcontrols" style={{ height: 'auto', padding: '5px 5px 0 16px', maxWidth: '100%' }} />
-            <div id="chartdiv" style={{ width: '100%', height: '500px', maxWidth: '100%' }}></div>
-        </div >
+        <>
+            <div style={{ backgroundColor: "rgb(30,30,30)" }}>
+                <div id="chartcontrols" style={{ height: 'auto', padding: '5px 5px 0 16px', maxWidth: '100%' }} />
+                <div id="chartdiv" style={{ width: '100%', height: '450px', maxWidth: '100%' }}></div>
+
+            </div>
+
+            <div className='editor-section'>
+                <hr className='line' />
+
+                <div className='editor-panel'>
+                    <div className='editor-menu'>
+                        <a onClick={() => setMenu('stock screener')}>
+
+                            <p>stock screener</p>
+                        </a>
+                        <a onClick={() => setMenu('editor')}>
+
+                            <p>sets editor</p>
+                        </a>
+                        <a onClick={() => setMenu('strategy Tester')}>
+
+                            <p>strategy Tester</p>
+                        </a>
+                        <a onClick={() => setMenu('trading panel')}>
+
+                            <p>trading panel</p>
+                        </a>
+                    </div>
+                    <div className='editor-icon'>
+                        {/* <FontAwesomeIcon icon={"fa-solid fa-minus"} />
+                        <i className="fa-solid fa-minus"></i> */}
+                        <p>minimized panel</p>
+                        <p>maximized panel</p>
+                    </div>
+
+                </div>
+                <hr className='line' />
+                <div className='container'>
+                    {
+                        menu === 'editor' ?
+                            <Editor
+                                theme="vs-dark"
+                                height="100%"
+                                defaultLanguage="python"
+                                defaultValue="// get started with python happy coding !!!!!!!!" /> :
+                            <div className='message'>
+                                <h3>
+                                    this is {menu}
+                                </h3>
+                            </div>
+
+                    }
+
+                </div>
+            </div>
+        </>
     );
 };
 
