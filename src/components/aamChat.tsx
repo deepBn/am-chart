@@ -5,12 +5,22 @@ import am5themes_Animated from '@amcharts/amcharts5/themes/Dark';
 import { useLayoutEffect, useState } from 'react';
 import React from 'react';
 import { data } from './data';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MonacoEditor from 'react-monaco-editor'
-import Editor from '@monaco-editor/react';
+
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-twilight";
+import "ace-builds/src-noconflict/ext-language_tools";
 
 const AamChat = () => {
     const [menu, setMenu] = useState('editor');
+
+    const openWindow = () => {
+        if (typeof window !== 'undefined') {
+
+            window.open('/editor');
+        }
+    };
     useLayoutEffect(() => {
         /**
   * ---------------------------------------
@@ -93,11 +103,11 @@ const AamChat = () => {
         let valueSeries = mainPanel.series.push(am5xy.CandlestickSeries.new(root, {
             name: "MSFT",
             clustered: false,
-            valueXField: "Date",
-            valueYField: "Close",
-            highValueYField: "High",
-            lowValueYField: "Low",
-            openValueYField: "Open",
+            valueXField: "date",
+            valueYField: "close",
+            highValueYField: "high",
+            lowValueYField: "low",
+            openValueYField: "open",
             calculateAggregates: true,
             xAxis: dateAxis,
             yAxis: valueAxis,
@@ -146,7 +156,7 @@ const AamChat = () => {
         let volumeSeries = mainPanel.series.push(am5xy.ColumnSeries.new(root, {
             name: "Volume",
             clustered: false,
-            valueXField: "Date",
+            valueXField: "date",
             valueYField: "Volume",
             xAxis: dateAxis,
             yAxis: volumeValueAxis,
@@ -207,8 +217,8 @@ const AamChat = () => {
         }));
 
         let sbSeries = scrollbar.chart.series.push(am5xy.LineSeries.new(root, {
-            valueYField: "Close",
-            valueXField: "Date",
+            valueYField: "close",
+            valueXField: "date",
             xAxis: sbDateAxis,
             yAxis: sbValueAxis
         }));
@@ -222,7 +232,7 @@ const AamChat = () => {
         let bollingerBands = stockChart.indicators.push(am5stock.BollingerBands.new(root, {
             stockChart: stockChart,
             stockSeries: valueSeries,
-            // legend: valueLegend
+            legend: valueLegend
         }));
 
 
@@ -331,8 +341,9 @@ const AamChat = () => {
                     <div className='editor-icon'>
                         {/* <FontAwesomeIcon icon={"fa-solid fa-minus"} />
                         <i className="fa-solid fa-minus"></i> */}
-                        <p>minimized panel</p>
-                        <p>maximized panel</p>
+                        <a target='_blank' href='/editor'  >
+                            <p>open in new window</p>
+                        </a>
                     </div>
 
                 </div>
@@ -340,11 +351,27 @@ const AamChat = () => {
                 <div className='container'>
                     {
                         menu === 'editor' ?
-                            <Editor
-                                theme="vs-dark"
-                                height="100%"
-                                defaultLanguage="python"
-                                defaultValue="// get started with python happy coding !!!!!!!!" /> :
+                            <div style={{ width: '100%', height: '200px' }}>
+                                <AceEditor
+                                    mode="python"
+                                    theme="twilight"
+                                    width="100%"
+                                    height='100%'
+                                    fontSize={20}
+                                    showGutter={true}
+                                    showPrintMargin={false}
+                                    placeholder="// some comment"
+                                    highlightActiveLine={true}
+                                    // onChange={onChange}
+                                    name="UNIQUE_ID_OF_DIV"
+                                    // commands={["hi"]}
+                                    editorProps={{ $blockScrolling: true }}
+                                    setOptions={{
+                                        enableBasicAutocompletion: true,
+                                        enableLiveAutocompletion: true,
+                                        enableSnippets: true,
+                                    }}
+                                /> </div> :
                             <div className='message'>
                                 <h3>
                                     this is {menu}
