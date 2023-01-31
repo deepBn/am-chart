@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@amcharts/amcharts5": "^5.2.50",
+    "@codemirror/lang-python": "^6.1.1",
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-regular-svg-icons": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
@@ -19,6 +20,7 @@
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "@uiw/react-codemirror": "^4.19.7",
     "d3-format": "^3.1.0",
     "d3-time-format": "^4.1.0",
     "eslint": "8.32.0",

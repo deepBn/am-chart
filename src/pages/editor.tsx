@@ -2,14 +2,14 @@
 import React from "react";
 
 
-// import AceEditorComponent from "@/components/aceEditor";
-import dynamic from "next/dynamic";
 
-const AceEditorComponent = dynamic(import('@/components/aceEditor'))
+
+import CodeMirrorEditor from "@/components/codeMirrorEditor";
+
 const EditorNewWindow = () => {
 
     return (
-        <AceEditorComponent />
+        <CodeMirrorEditor />
 
     )
 
