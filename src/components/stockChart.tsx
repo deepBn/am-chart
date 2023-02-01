@@ -30,19 +30,15 @@ import {
 import { initialData } from "./data";
 
 
-const StockChart = () => {
+const StockChart = ({ height, width, margin, data, xScale, xAccessor, displayXAccessor }) => {
 
     // const [data, setData] = useState();
     // const [xAccessor, setXAccessor] = useState();
 
 
 
-    const ScaleProvider = discontinuousTimeScaleProviderBuilder().inputDateAccessor(
-        (d) => new Date(d.date)
-    );
-    const height = 700;
-    const width = 1300;
-    const margin = { left: 0, right: 48, top: 0, bottom: 24 };
+
+
 
     const ema12 = ema()
         .id(1)
@@ -63,9 +59,18 @@ const StockChart = () => {
     const elder = elderRay();
 
     const calculatedData = elder(ema26(ema12(initialData)));
-    const { data, xScale, xAccessor, displayXAccessor } = ScaleProvider(
-        initialData
-    );
+    // let data, xScale, xAccessor, displayXAccessor;
+    // useMemo(() => {
+
+    //     data = Data,
+    //         xScale = XScale,
+    //         xAccessor = XAccessor,
+    //         displayXAccessor = DisplayXAccessor
+
+
+    // }, [])
+
+
     const pricesDisplayFormat = format(".2f");
     const max = xAccessor(data[data.length - 1]);
     const min = xAccessor(data[Math.max(0, data.length - 100)]);
@@ -115,7 +120,7 @@ const StockChart = () => {
     return (
         <ChartCanvas
             height={height}
-            ratio={3}
+            ratio={1}
             width={width}
             margin={margin}
             data={data}
@@ -126,41 +131,41 @@ const StockChart = () => {
             xExtents={xExtents}
             zoomAnchor={lastVisibleItemBasedZoomAnchor}
         >
-            <Chart
+            {/* <Chart
                 id={2}
                 height={barChartHeight}
                 origin={barChartOrigin}
                 yExtents={barChartExtents}
             >
                 <BarSeries fillStyle={volumeColor} yAccessor={volumeSeries} />
-            </Chart>
-            <Chart id={3} height={chartHeight} yExtents={candleChartExtents}>
+            </Chart> */}
+            <Chart id={1} height={chartHeight} yExtents={candleChartExtents}>
                 <XAxis showGridLines showTickLabel={false} />
                 <YAxis showGridLines tickFormat={pricesDisplayFormat} />
                 <CandlestickSeries />
-                <LineSeries yAccessor={ema26.accessor()} strokeStyle={ema26.stroke()} />
-                <CurrentCoordinate
+                {/* <LineSeries yAccessor={ema26.accessor()} strokeStyle={ema26.stroke()} /> */}
+                {/* <CurrentCoordinate
                     yAccessor={ema26.accessor()}
                     fillStyle={ema26.stroke()}
-                />
-                <LineSeries yAccessor={ema12.accessor()} strokeStyle={ema12.stroke()} />
-                <CurrentCoordinate
+                /> */}
+                {/* <LineSeries yAccessor={ema12.accessor()} strokeStyle={ema12.stroke()} /> */}
+                {/* <CurrentCoordinate
                     yAccessor={ema12.accessor()}
                     fillStyle={ema12.stroke()}
-                />
+                /> */}
                 <MouseCoordinateY
                     rectWidth={margin.right}
                     displayFormat={pricesDisplayFormat}
                 />
-                <EdgeIndicator
+                {/* <EdgeIndicator
                     itemType="last"
                     rectWidth={margin.right}
                     fill={openCloseColor}
                     lineStroke={openCloseColor}
                     displayFormat={pricesDisplayFormat}
                     yAccessor={yEdgeIndicator}
-                />
-                <MovingAverageTooltip
+                /> */}
+                {/* <MovingAverageTooltip
                     origin={[8, 24]}
                     options={[
                         {
@@ -176,12 +181,14 @@ const StockChart = () => {
                             windowSize: ema12.options().windowSize
                         }
                     ]}
-                />
+                /> */}
 
-                <ZoomButtons />
-                <OHLCTooltip origin={[8, 16]} />
+                {/* <ZoomButtons /> */}
+                {/* <OHLCTooltip origin={[8, 16]} /> */}
+                <CrossHairCursor />
+
             </Chart>
-            <Chart
+            {/* <Chart
                 id={4}
                 height={elderRayHeight}
                 yExtents={[0, elder.accessor()]}
@@ -209,8 +216,7 @@ const StockChart = () => {
                     }
                     origin={[8, 16]}
                 />
-                {() => <CrossHairCursor />}
-            </Chart>
+            </Chart> */}
 
         </ChartCanvas>
     );
