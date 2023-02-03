@@ -1,10 +1,14 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import * as am5 from "@amcharts/amcharts5";
 import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 import am5themes_Dark from "@amcharts/amcharts5/themes/Dark";
+import SplitPane from "react-split-pane";
+import CodeMirror from "./Code_mirror";
 
-function BarChart() {
+function BarChartComp() {
+  const [showEditPannel, setShowEditPannel] = useState(false);
+  // const [scrollTop, setScrollTop] = useState(0);
   useLayoutEffect(() => {
     // Create root element
     // https://www.amcharts.com/docs/v5/getting-started/#Root_element
@@ -12,6 +16,7 @@ function BarChart() {
 
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
+    // root.setThemes([am5themes_Animated.new(root)]);
     // root.setThemes([am5themes_Animated.new(root)]);
     root.setThemes([am5themes_Animated.new(root)]);
 
@@ -188,10 +193,61 @@ function BarChart() {
   }, []);
   return (
     <>
-      <div id="chartcontrols"></div>
-      <div id="chartdiv" style={{ width: "100%", height: "500px" }}></div>
+      <div className="main">
+        <SplitPane
+          split="horizontal"
+          minSize={10}
+          defaultSize={"80%"}
+          maxSize={-100}
+        >
+          <div className="chartbar">
+            <div id="chartcontrols"></div>
+            <div id="chartdiv" style={{ width: "100%", height: "100%" }}></div>
+          </div>
+          <div className="bottom_bar">
+            <div className="pannelBar">
+              <div className="pannel">
+                <a onClick={() => setShowEditPannel("stock screener")}>
+                  <p>Stock screener</p>
+                </a>
+                <a onClick={() => setShowEditPannel(!showEditPannel)}>
+                  <p>Editor</p>
+                </a>
+                <a onClick={() => setShowEditPannel("strategy Tester")}>
+                  <p>Strategy Tester</p>
+                </a>
+                <a onClick={() => setShowEditPannel("trading panel")}>
+                  <p>Trading panel</p>
+                </a>
+              </div>
+              <div>
+                <span>_</span>
+              </div>
+            </div>
+            {showEditPannel ? (
+              <div className="section">
+                <div className="sectionBar">
+                  <p>Untitled script</p>
+                  <div className="rightSection">
+                    <p>open</p>
+                    <p>save</p>
+                    <p>Add to chart</p>
+                    <p>publish script</p>
+                    <a href="#" target="_blank">
+                      <p>...</p>
+                    </a>
+                  </div>
+                </div>
+                <div className="editor">
+                  <CodeMirror />
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </SplitPane>
+      </div>
     </>
   );
 }
 
-export default BarChart;
+export default BarChartComp;

@@ -29,7 +29,8 @@ const AamChat = () => {
         // -------------------------------------------------------------------------------
         // https://www.amcharts.com/docs/v5/concepts/themes/
         root.setThemes([
-            am5themes_Animated.new(root)
+            am5themes_Animated.new(root),
+            
         ]);
 
 
